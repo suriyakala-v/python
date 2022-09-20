@@ -1,0 +1,276 @@
+
+import time
+import datetime
+import mysql.connector
+
+mydb=mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="12345",
+    database="hotel"
+)
+
+print("************************WELCOME************************")
+print("-----------------------XYZ Hotel-----------------------")
+print("=========VANDHA ANAIVARAIYUM SAAPIDA VAIPOMM===========")
+
+
+print("                            ",datetime.datetime.now())
+print("------------------------------")
+print("| TIME      <>        FOOD   |")
+print("| 6-12      :      Breakfast |")
+print("| 1-4       :       Lunch    |")
+print("| 6-10      :       Dinner   |")
+print("------------------------------\n")
+
+print("  (a)BREAKFAST          (b) LUNCH                    (c) DINNER          ")
+print(" 1.Idly(Rs.5)        5.Meals(Rs.70)        9.chapathi(Rs.10) ")
+print(" 2.Dosa(Rs.10)       6.Lemonrice(Rs.30)    10.Parota(Rs.15) ")      
+print(" 3.Pongal(Rs.30)     7.Curdrice(Rs.30)     11.Noodles(Rs.100)")
+
+idly=5
+dosa=chapathi=10
+parota=15
+pongal=lemonrice=curdrice=30
+meals=70
+noodles=100
+pomogranate=40
+Mango=30
+apple=50
+
+def breakfast(amount):
+    try:
+        bf=input("Select your dish from breakfast ").lower()
+        if (bf=="idly"):
+           num=int(input(f"how much {bf} do you want:"))
+           amount=amount+(idly*num)
+           ask=str(input("Do you want any another dish...s or no\n"))
+           if (ask=="s"):
+              breakfast(amount)
+           elif(ask=="no"):
+               juice(amount)
+              
+           else:
+                print(f"Total amount you want to pay is Rs.{amount}")
+
+        elif (bf=="dosa"):
+            no=int(input(f"how much {bf} do you want:"))
+            amount=amount+(dosa*no)
+            ask=str(input("Do you want any another dish...s or no\n")).lower()
+            if (ask=="s"):
+               breakfast(amount)
+            elif(ask=="no"):
+               juice(amount)
+              
+            else:
+               print(f"total amount you want to pay is Rs. {amount}")
+
+
+        elif (bf=="pongal"):
+            no=int(input("how much {bf} do you want:"))
+            amount=amount+(pongal*no)
+            ask=str(input("Do you want any another dish: s or no\n")).lower()
+            if (ask=="s"):
+               breakfast(amount)
+            elif(ask=="no"):
+                juice(amount)
+              
+            else:
+               print(f"total amount you want to pay is Rs. {amount}")
+            return amount
+    except:
+        print("please give correct dish name!!!")
+
+def lunch(amount):
+  try:
+    lun=input(("select your dish from lunch")).lower()
+    if (lun=="meals"):
+       no=int(input(f"how much {lun} do you want:"))
+       amount=amount+(meals*no)
+       ask=str(input("Do you want any another dish: s or no\n"))
+       if (ask=="s"):
+           lunch(amount)
+       elif(ask=="no"):
+          juice(amount)
+              
+       else:
+           print(f"total amount you want to pay is Rs. {amount}")
+
+    elif (lun=="lemonrice"):
+        no=int(input(f"how much {lun} do you want:"))
+        amount=amount+(lemonrice*no)
+        ask=str(input("Do you want any another dish:s(or)no\n")).lower
+        if (ask=="s"):
+            lunch(amount)
+        elif(ask=="no"):
+             juice(amount)
+              
+        else:
+           print(f"Total amount you want to pay is Rs.{amount}")
+
+
+    elif (lun=="curdrice"):
+        no=int(input(f"how much {lun} do you want:"))
+        amount=amount+(curdrice*no)
+        ask=str(input("Do you want any another dish:s(or)no\n")).lower()
+        if (ask=="s"):
+            lunch(amount)
+        elif(ask=="no"):
+            juice(amount)
+              
+        else:
+           print(f"Total amount you want to pay is Rs.{amount}")
+    return amount
+  except:
+        print("please give correct dish name!!!")
+        
+def dinner(amount):
+  try:
+    din=input(("select your dish from dinner")).lower()
+    if (din=="chapathi"):
+       no=int(input(f"how much {din} do you want:"))
+       amount=amount+(chapathi*no)
+       ask=str(input("Do you want any another dish: s or no\n"))
+       if (ask=="s"):
+           dinner(amount)
+       elif(ask=="no"):
+            juice(amount)
+              
+       else:
+           print(f"total amount you want to pay is Rs. {amount}")
+
+    
+        
+    elif (din=="parota"):
+       no=int(input(f"how much {din} do you want:"))
+       amount=amount+(parota*no)
+       ask=str(input("Do you want any another dish: s or no\n"))
+       if (ask=="s"):
+           dinner(amount)
+       elif(ask=="no"):
+             juice(amount)
+              
+       else:
+           print(f"total amount you want to pay is Rs. {amount}")
+
+    
+    elif (din=="noodles"):
+        no=int(input(f"how much{din} do you want:"))
+        amount=amount+(noodles*no)
+        ask=str(input("Do you want any another dish:s(or)no\n"))
+        if (ask=="s"):
+            dinner(amount)
+        elif(ask=="no"):
+            juice(amount)
+              
+        else:
+            print(f"total amount you want to pay is Rs. {amount}")
+    return amount
+  except:
+        print("please give correct dish name!!!")
+
+def juice(amount):
+    print("""1. pomogranate juice = Rs.40
+             2. Mango juice = 30
+             3. Apple juice = 50 """)
+    j=input("Do you want juice...s or no")
+    if j=="s":
+        uj=int(input("Which juice you want..? 1 or 2 or 3\n"))
+        if uj==1:
+           no=int(input("How many Pomogranate juice do you want:"))
+           amount=amount+(pomogranate*no)
+           ask=str(input("Do you want any other juice:s or no:\n"))
+           if ask=="s":
+              juice(amount)
+           else:
+              print(f"total amount you want to pay is Rs. {amount}")
+        if uj==2:
+            no=int(input("How many mango juice do you want:"))
+            amount=amount+(Mango*no)
+            ask=str(input("Do you want any other juice:s or no:\n"))
+            if ask=="s":
+              juice(amount)
+            else:
+               print(f"total amount you want to pay is Rs. {amount}")
+        if uj==3:
+            no=int(input("How many apple juice do you want:"))
+            amount=amount+(apple*no)
+            ask=str(input("Do you want any other juice:s or no:\n"))
+            if ask=="s":
+               juice(amount)
+            else:
+               print(f"total amount you want to pay is Rs. {amount}")
+    else:
+        print(f"total amount you want to pay is Rs. {amount}")
+    return amount
+
+
+date=datetime.datetime.now()
+hour=(datetime.datetime.now().hour)
+
+if (hour>=6) and hour<=12:
+    print("welcome!!! this is breakfast time")
+    user=input("Do you want breakfast...s or no:\n").lower()
+    if user=="s":
+         amount=breakfast(0)
+    else:
+        order=(input("\nl...for lunch\nd...for dinner\nj...for juice\nPlease Enter your option l or d:\n"))
+        if order=="l":
+            amount=lunch(0)
+        elif order=="d":
+            amount=dinner(0)
+        else:
+            amount=juice(0)
+
+elif(hour>=13) and hour<=17:
+    print("welcome!!! this is lunch time")
+    user=input("Do you want lunch...s or no:\n").lower()
+    if user=="s":
+       amount=lunch(0)
+    else:
+        order=(input("\nb...for breakfast\nd...for dinner\nj...for juice Please\n Enter your option b or d:\n "))
+        if order=="b":
+           amount=breakfast(0)
+        elif order=="d":
+            amount=dinner(0)
+        else:
+            amount=juice(0)
+
+elif(hour>=17):
+    print("welcome!!! this is dinner time")
+    user=input("Do you want dinner...s or no:\n").lower()
+    if user=="s":
+       amount=dinner(0)
+    else:
+         order=(input("\nb...for breakfast\nl...for lunch \nj..for juice Please Enter your option b or l:\n "))
+         if order=="b":
+            amount=breakfast(0)
+         elif order=="l":
+            amount=lunch(0)
+         else:
+            amount=juice(0)
+else:
+    print("Enter the Correct option a or b or c !!!\n")
+
+name=input("Enter your name:" )
+phn=int(input("Enter your phone number:"))
+bill=amount
+date=datetime.datetime.now()
+fb=input("Please share your opinion on foods :) \n")
+
+mycursor=mydb.cursor()
+sq="INSERT INTO hotel_table(name, phn_num, bill, date, feedback) values(%s,%s,%s,%s,%s)"
+val=(name, phn, bill, date, fb)
+mycursor.execute(sq,val)
+mydb.commit()
+
+print(" |________________________________________|")
+print(" |            XYZ HOTEL                   |")
+print(f"|                   {date}               |")        
+print(f"| Your Name           :    {name}        |")
+print(f"| your Total bill     :        Rs.{bill} |")
+print(" |________________________________________|")
+print("****************THANK YOU FOR COMMING****************")
+print("*******************VISIT AGAIN*******************")
+
+
