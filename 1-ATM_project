@@ -1,0 +1,127 @@
+
+import time
+import datetime
+import random
+import mysql.connector
+
+db=mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="12345",
+    database="atm_db"
+)
+
+print("***************************************")
+print("*         WELCOME to XYZ BANK         *")
+print("***************************************")
+print("please insert your ATM card>>>>>>>>>>>>")
+time.sleep(2.5)
+
+def all(balance,n,acct):
+    time.sleep(2)
+    print("""\nHow can i help you...Enter your choice
+    \n1 ==Cash withdraw\n2 ==Cash deposit\n3 ==New user - PIN generate\n4 ==Balance Enquiry
+    \nchoose  1 or 2 or 3 or 4 """)
+    time.sleep(1)
+    try:
+       user=int(input("Enter your option:"))
+    except:
+        print("please enter valid numerical option\n1\n2\n3\n4")
+    if user==1: 
+        amt=int(input("How much cash you want to withdraw..?  "))
+        if amt<balance:
+            if amt<=10000:
+                print("Here your cash please take")
+                time.sleep(2)
+                rept=input("Do you want receipt?..s or no: ").lower()
+                if rept=="s":
+                    balance=balance-amt
+                    receipt(balance,n,acct)
+                   
+                else:
+                    print("^^^THANK YOU^^^for your visit")
+            else:
+                print("You can only withdraw 10k by a time")
+        else:
+            print("You don't have Sufficient Balance")
+
+
+    elif user==2:
+        print("check your information!!!")
+        d_amt=int(input("How much cash you want to deposit? "))
+        print("place the cash here...")
+        time.sleep(2)
+        balance=d_amt+balance
+        print(f"Successfully Deposited\nyour TOTAL balance is {balance}")
+        rp=input("Do you want receipt.? s or no").lower()
+        if rp=="s":
+            receipt(balance,n,acct)
+        else:
+            print("^^^Thank you^^^")
+
+    
+    elif user==3:
+        print("Welcome...you are the new user")
+        phn=input("Do you have registered phone number with you..?...s or no ").lower()
+        if phn=="s":
+            OTP=random.randint(1000,9999)
+            print(f"Your OTP is >>> {OTP}")
+            time.sleep(2)
+            otp=int(input("Enter 4 digit OTP that we sent you.. "))
+            time.sleep(1)
+            if otp==OTP:
+                new_pin=int(input("OK\nChoose any 4 digit number to generate as your secret pin :"))
+                print(f"*** PIN Generated successfully***\nNow your secret pin is....{new_pin}")
+            else:
+                print("You Entered wrong OTP\nPlease Enter Correct OTP")
+        else:
+            print("Registered mobile number is manditory to get otp\nBring phone")
+
+
+
+    elif user==4:
+        print("Available Balance is Rs.",balance)
+        rct=input("Do you want receipt?...s or no.. ").lower()
+        if rct=="s":
+            print("please wait")
+            time.sleep(1)
+            balance=balance
+            receipt(balance,n,acct)
+            
+    else:
+       print("please Enter correct option\n1 or 2 or 3 or 4")
+       
+def receipt(bl,n,acct):
+    print("._______________________________________.")
+    print( datetime.datetime.now()                   )
+    print("|****************XYZ Bank***************|")
+    print("|Your Account Number.................",acct,"|")
+    print("|Account Holder Name is ...",n,     "|")
+    print("|Your current balance......Rs",bl,       "|")
+    print("|^^^^^THANK YOU....(: Visit Again^^^^^^^|")
+    print("|_______________________________________|")
+
+try:
+     
+    up=int(input("Enter your 4 digit secret pin number:"))
+    time.sleep(2)
+    mycursor=db.cursor()
+    mycursor.execute("select*from data where user_pin='%s'"%(up))
+    row=mycursor.fetchone()
+ 
+    if mycursor.rowcount==1:
+         if up in row:
+            n1=row[1]
+            acct=row[3]
+            print("--------------------------------------------->>>")
+            print(f">>>>>Your account details<<<<<\nAccount Number...{acct}\nYour name is {n1}")
+            balance=row[2]
+            all(balance,n1,acct)
+         else:
+             print("Your pin is INVALID\nplease put correct pin number")
+
+    else:
+        print("Wrong number")
+
+except: 
+    print("please Enter Digits")
