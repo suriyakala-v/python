@@ -1,0 +1,536 @@
+
+
+import { toCheckGivenisNumber } from "./mymodule"
+
+const prompt = require('prompt-sync')()
+
+class Bank {
+    bank_name: string
+    minimum_balance: number
+    account!: Account_details[]
+    employee!:employee_details[]
+
+    constructor(bank_name: string, minimum_balance: number) {
+        this.bank_name = bank_name
+        this.minimum_balance = minimum_balance
+    }
+
+
+
+    credit(accountNumber:number,amount:number):boolean{
+         let itr:number=0
+          while(itr <  this.account.length){
+            if(accountNumber == this.account[itr].accountNumber){
+               result = this.account[itr].credit(amount)
+               
+            }
+            itr++
+          }
+          if(result== true){
+            return true
+          }else{
+            return false
+          }
+    }
+
+    debit(accountNumber:number,amount:number):boolean{
+        let itr:number=0;let result!:boolean
+        while(itr < this.account.length){
+            if(accountNumber == this.account[itr].accountNumber){
+                result= this.account[itr].debit(amount)
+            }
+            itr++
+        }
+        if(result == true){
+            return true
+        }else{
+            return false
+        }
+    }
+
+    deactivateAccount(accountNumber:number):boolean{
+        let itr:number=0;let count:number=0
+        while(itr < this.account.length){
+            if(accountNumber == this.account[itr].accountNumber){
+                this.account.splice(itr,1)
+                count++
+            }
+            itr++
+        }
+        if(count == 1){
+            return true
+        }else{
+            return false
+        }
+    }
+
+    toAddAccount(account1:Account_details):void{
+        this.account.push(account1)
+
+    }
+
+    showtransaction(accountNumber:number){
+        let itr:number=0;
+        while(itr < this.account.length){
+            if(accountNumber == this.account[itr].accountNumber){
+                console.log(this.account[itr].transaction)
+            }
+        }
+    }
+
+    listAccount():void{
+        console.log(this.account)
+    }
+}
+
+class Account_details {
+    bank!: Bank
+    accountNumber: number
+    customer_name: string
+    initial_amount: number
+    current_balance: number
+    transaction!:Transaction_details[]
+    isActive: boolean
+
+
+    constructor(accountNumber: number, customer_name: string, initial_amount: number, current_balance: number, isActive: boolean) {
+        this.accountNumber = accountNumber
+        this.customer_name = customer_name
+        this.initial_amount = initial_amount
+        this.current_balance = current_balance
+        this.isActive = isActive
+    }
+
+    
+
+    credit(Amount: number): boolean {
+        this.current_balance = this.current_balance + Amount
+       // this.transaction.push(Amount)
+       
+        return true
+    }
+
+    debit(Amount: number): boolean {
+        let temp_balance!:number;
+        if (this.current_balance > Amount) {
+            temp_balance= this.current_balance - Amount
+            if(temp_balance > 99 ){
+                this.current_balance= temp_balance
+            }
+        }
+        if(temp_balance > 99){
+            return true
+        }else{
+            return false
+        }
+        //if(temp)
+    }
+
+    showtransaction(): void {
+        console.log(this.transaction)
+    }
+
+}
+
+class Transaction_details {
+    transactionId: number
+    transactionType: string
+    amount: number
+    date: Date
+
+    constructor(transactionId: number, transactionType: string, Amount: number, date: Date) {
+        this.transactionId = transactionId
+        this.transactionType = transactionType
+        this.amount = Amount
+        this.date = date
+    }
+}
+
+class employee_details {
+    employee_name: string
+    employee_id:number
+    bank!: Bank;
+
+    constructor(employee_name: string,employee_id:number) {
+        this.employee_name = employee_name
+        this.employee_id=employee_id
+    }
+
+    toProcessDeposit(accountNumber:number,amount:number):boolean{
+        let itr:number=0
+         while(itr <  this.bank.account.length){
+           if(accountNumber == this.bank.account[itr].accountNumber){
+              result = this.bank.account[itr].credit(amount)
+              
+           }
+           itr++
+         }
+         if(result== true){
+           return true
+         }else{
+           return false
+         }
+   }
+
+   toProcessWithdraw(accountNumber:number,amount:number):boolean{
+       let itr:number=0;let result!:boolean
+       while(itr < this.bank.account.length){
+           if(accountNumber == this.bank.account[itr].accountNumber){
+               result= this.bank.account[itr].debit(amount)
+           }
+           itr++
+       }
+       if(result == true){
+           return true
+       }else{
+           return false
+       }
+   }
+
+   toDeactivateAccount(accountNumber:number):boolean{
+       let itr:number=0;let count:number=0
+       while(itr < this.bank.account.length){
+           if(accountNumber == this.bank.account[itr].accountNumber){
+               this.bank.account.splice(itr,1)
+               count++
+           }
+           itr++
+       }
+       if(count == 1){
+           return true
+       }else{
+           return false
+       }
+   }
+
+   toAddAccount(account1:Account_details):void{
+        this.bank.account.push(account1)
+    }
+
+    showtransaction(accountNumber:number){
+
+        this.bank.showtransaction(accountNumber)
+        /*let itr:number=0;
+        while(itr < this.bank.account.length){
+            if(accountNumber == this.bank.account[itr].accountNumber){
+                console.log(this.bank.account[itr].transaction)
+            }
+        }*/
+    }
+
+    listAccount():void{
+        console.log(this.bank.account)
+    }
+}
+
+
+let name:string=prompt("Enter your name: ")
+console.log("Hi "+name+". Welcome to Canara Bank.")
+let bank_details: Bank[] = []
+let bank_name: string = "Canara Bank"
+let minimum_balance: number = 100
+//object creation for bank
+let bank1 = new Bank(bank_name, minimum_balance)
+bank1.account = []
+bank1.employee=[]
+let employee_name = "Vikram"
+let employee_id=2001
+//object creation for employee_details
+let employee1 = new employee_details(employee_name,employee_id)
+bank1.employee.push(employee1)
+let employee2=new employee_details("Dhinesh",2002)
+bank1.employee.push(employee2)
+let employee3=new employee_details("Jeeva",2003)
+bank1.employee.push(employee3)
+let employee4=new employee_details("Guru",2004)
+bank1.employee.push(employee4)
+
+
+let total_customer_count: number; let result: boolean; let account1;let transaction1
+
+/*
+
+do {
+    total_customer_count = prompt("Enter the total customer strength: ")
+    result = toCheckGivenisNumber(total_customer_count)
+    if (result == true) {
+        console.log("You have entered wrong value! Please enter the correct value")
+    }
+
+} while (result == true)
+
+let itr1: number = 0;let num:number=0;let num2:number=1
+while (itr1 < total_customer_count) {
+     let accountNumber: number
+        accountNumber=1001+num
+        let customer_name: string = prompt("Enter the "+num2+" Name: ")
+        let initial_amount: number;
+        do {
+            initial_amount = Number(prompt("Enter the initial amount: "))
+            result = toCheckGivenisNumber(initial_amount)
+            if (result == true || initial_amount < 99) {
+                console.log("Initial value should be greater than 100(minimum balance)")
+            }
+
+        } while (result == true || initial_amount < 99)
+
+        let current_balance: number
+        current_balance=Number(initial_amount)
+        
+        let isActive: boolean = prompt("Enter 'true' for account active and 'false' for account inactive ")
+        account1 = new Account_details(accountNumber, customer_name, initial_amount, current_balance, isActive)
+        account1.transaction=[]
+        bank1.account.push(account1)  //bank1.toAddAccount(account1)
+        num++
+        num2++
+    
+    itr1++
+}
+// bank_details.push(bank1)
+
+*/
+let count:number =0;let user_choise:string
+do{
+console.log("Are you Customer/Employee")
+user_choise=prompt("Enter Customer or Employee: ")
+if(user_choise == "Customer" || user_choise == "Employee"){
+    count++
+}else{
+    console.log("Please choose the correct given option ")
+}
+}while(count != 1)
+
+
+//object creation for account_details
+if(user_choise == "Employee"){
+let itr:number;let num:number=0;let emp_code!:number
+
+do{
+    employee_id=prompt("Enter your employee ID: ")
+    let itr:number=0;count=0
+    while(itr < bank1.employee.length){
+        if(employee_id == bank1.employee[itr].employee_id){
+          count++
+          emp_code=itr
+        }
+        itr++
+    }
+    if(count != 1){
+        console.log("You have entered wrong employee Id.Please enter the correct employee Id")
+        count=prompt("Enter '1' to exit or '0' to continue")
+    }
+}while(count != 1)
+
+if(count == 1){
+console.log("Enter '1' to create new account")
+console.log("Enter '2' to credit amount")
+console.log("Enter '3' to debit amount")
+console.log("Enter '4' to check the current balance")
+console.log("Enter '5' to view the transaction history")
+console.log("Enter '6' to deactivate account")
+console.log("Enter '7' to exit")
+let choose_value: number = prompt("Choose any one number according to your wish: ")
+let num1:number=0;
+do {
+    if (choose_value == 1) {
+        let accountNumber: number
+        accountNumber=1001+num
+        let customer_name: string = prompt("Enter your Name: ")
+        let initial_amount: number;
+        do {
+            initial_amount = Number(prompt("Enter the initial amount: "))
+            result = toCheckGivenisNumber(initial_amount)
+            if (result == true || initial_amount < 99) {
+                console.log("Initial value should be greater than 100(minimum balance)")
+            }
+
+        } while (result == true || initial_amount < 99)
+
+        let current_balance: number
+        current_balance=Number(initial_amount)
+       
+        let isActive: boolean = prompt("Enter 'true' for account active and 'false' for account inactive ")
+        account1 = new Account_details(accountNumber, customer_name, initial_amount, current_balance, isActive)
+        account1.transaction=[]
+        bank1.toAddAccount(account1)
+        bank1.employee[emp_code].toAddAccount(account1)
+        num++
+
+        
+        
+
+    } else 
+    if (choose_value == 2) {
+        let count: number = 0
+        do {
+            let accountNumber = prompt("Enter the account number: ")
+            itr = 0; count = 0;
+            while (itr < bank1.account.length) {
+                if (accountNumber == bank1.account[itr].accountNumber) {
+                    let amount: number =Number(prompt("Enter the amount to credit in the account: "))
+                    let result = bank1.account[itr].credit(amount)
+                    let date1=new Date()
+                    let transactionId:number = 1003343251 + num1
+                    transaction1 = new Transaction_details(transactionId,"cerdit",amount,date1)
+                    bank1.account[itr].transaction.push(transaction1)
+                    num1++
+                    if (result == true) {
+                        console.log("Successfully money has been credited to your account")
+                        console.log("The total balance available is "+bank1.account[itr].current_balance)
+                    }
+                    count++
+                }
+                itr++
+            }
+            if (count != 1) {
+                console.log("You have entered wrong value. Please enter the correct account number")
+            }
+
+        } while (count != 1)
+     
+
+    } else if (choose_value == 3) {
+        let count: number;
+        do {
+            let accountNumber = prompt("Enter the account number: ")
+            itr = 0; count = 0
+            while (itr < bank1.account.length) {
+                if (accountNumber == bank1.account[itr].accountNumber) {
+                    let amount: number =Number(prompt("Enter the amount to debit in the account: "))
+                    let result = bank1.account[itr].debit(amount)
+                    if (result == true) {
+                        let transactionId:number = 1003343251 + num1
+                        let date1=new Date()
+                        transaction1 = new Transaction_details(transactionId,"debit",amount,date1)
+                        bank1.account[itr].transaction.push(transaction1)
+                        console.log("Successfully money has been debited from your account")
+                        console.log("The total balance available is "+bank1.account[itr].current_balance)
+                        num1++
+                    } else {
+                        console.log("You don't sufficent amount to debit")
+                        console.log("The total balance available is "+bank1.account[itr].current_balance)
+                    }
+
+                    count++
+                }
+                itr++
+            }
+            if (count != 1) {
+                console.log("You have entered wrong value. Please enter the correct account number")
+                count=prompt("Enter '1' to exit or '0' to continue ")
+            }
+
+        } while (count != 1)
+
+    } else if (choose_value == 4) {
+        let count: number
+        do {
+            let accountNumber = prompt("Enter the account number: ")
+            itr = 0; count = 0
+            while (itr < bank1.account.length) {
+                if (accountNumber == bank1.account[itr].accountNumber) {
+                    console.log("The current balance of account number " + accountNumber + " is " + bank1.account[itr].current_balance)
+                    count++
+                }
+                itr++
+            }
+            if (count != 1) {
+                console.log("You have entered wrong value. Please enter the correct account number")
+                count=prompt("Enter '1' to exit or '0' to continue ")
+            }
+
+        } while (count != 1)
+
+
+
+    } else if (choose_value == 5) {
+        let count: number
+        do {
+            let accountNumber = prompt("Enter the account number: ")
+            itr = 0; count = 0
+            while (itr < bank1.account.length) {
+                if (accountNumber == bank1.account[itr].accountNumber) {
+                    console.log("The transaction history of account number " + accountNumber + " are " )
+                    console.log(bank1.account[itr].transaction)
+                    count++
+                }
+                itr++
+            }
+            if (count != 1) {
+                console.log("You have entered wrong value. Please enter the correct account number")
+                count=prompt("Enter '1' to exit or '0' to continue ")
+            }
+
+        } while (count != 1)
+
+    } else if (choose_value == 6) {
+        let count: number;let result:boolean
+        do {
+            let accountNumber = prompt("Enter the account number: ")
+            itr = 0; count = 0
+            while (itr < bank1.account.length) {
+                if (accountNumber == bank1.account[itr].accountNumber) {
+                    result=bank1.deactivateAccount(accountNumber)
+                    if(result== true){
+                        console.log("Successfully your account has been deactivated!" )
+                    }else{
+                        console.log("Sorry for the inconvinence.Please try again or try after few minutes")
+                    }
+                    
+                    
+                    count++
+                }
+                itr++
+            }
+            if (count != 1) {
+                console.log("You have entered wrong value. Please enter the correct account number")
+                count=prompt("Enter '1' to exit or '0' to continue ")
+            }
+
+        } while (count != 1)
+        
+    }
+    let choose_value1:number
+    do{
+    
+    choose_value1=prompt("Enter '1' to main menu or '0' to exit: ")
+    if(choose_value1==1){
+        console.log("Enter '1' to create new account")
+        console.log("Enter '2' to credit amount")
+        console.log("Enter '3' to debit amount")
+        console.log("Enter '4' to check the current balance")
+        console.log("Enter '5' to view the transaction history")
+        console.log("Enter '6' to deactivate account")
+        console.log("Enter '7' to exit")
+        choose_value = prompt("Choose any one number according to your wish: ")
+
+    }else{
+        choose_value=7
+    } 
+    }while(choose_value1 > 1) 
+
+} while (choose_value != 7)
+bank_details.push(bank1)
+}
+
+
+}else if (user_choise== "Customer") {
+    do{
+        employee_id=prompt("Enter your employee ID: ")
+        let itr:number=0;count=0
+        while(itr < bank1.employee.length){
+            if(employee_id == bank1.employee[itr].employee_id){
+              count++
+            }
+            itr++
+        }
+        if(count != 1){
+            console.log("You have entered wrong employee Id.Please enter the correct employee Id")
+            count=prompt("Enter '1' to exit or '0' to continue")
+        }
+    }while(count != 1)
+
+}
+
+//**************************************************************************************************************
+
